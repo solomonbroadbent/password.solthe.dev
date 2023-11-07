@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"math/rand"
 	"os"
 	"strconv"
@@ -10,10 +11,12 @@ import (
 	"golang.org/x/text/language"
 )
 
-// hermitdave_frequencywords_en_50k.txt
-// hermitdave_frequencywords_es_50k.txt
-// raw_dict_en.txt
-// raw_dict_es.txt
+// this seems really hacky below. probably need to go to s3 solution
+// that means vendor lock in? unless use a standardised s3 env variables thing maybe?
+// so maybe docker self hosting instead? FUCK THAT HACK AWAY RN
+
+//go:embed assets/*.txt
+var CONTENT embed.FS
 
 func getRandomItem(words []string) string {
 	randomNumber := rand.Intn(len(words))
@@ -46,7 +49,7 @@ func generatePassword(words []string, symbols []string, wordCount int) string {
 func getWords() []string {
 	filePath := "assets/raw_dict_en.txt"
 
-	file, err := os.ReadFile(filePath)
+	file, err := CONTENT.ReadFile(filePath)
 
 	if err != nil {
 		os.Stderr.WriteString("error opening file")
@@ -64,7 +67,7 @@ func getWords() []string {
 func getSymbols() []string {
 	filePath := "assets/symbols.txt"
 
-	file, err := os.ReadFile(filePath)
+	file, err := CONTENT.ReadFile(filePath)
 
 	if err != nil {
 		os.Stderr.WriteString("error opening file")
@@ -81,22 +84,21 @@ func getSymbols() []string {
 
 type Response struct {
 	Body string `json:"body"`
+	// StatusCode int    `json:"statusCode,omitempty"`
 }
 
-func Main() Response {
+type Request struct {
+	Name string `json:"name"`
+}
+
+func Main(request Request) Response {
 
 	words := getWords()
 	symbols := getSymbols()
 
 	password := generatePassword(words, symbols, 3)
 
-	os.Stdout.WriteString(password)
-
 	return Response{
 		Body: password,
 	}
-}
-
-func main() {
-	Main()
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 
 	"golang.org/x/text/cases"
@@ -20,24 +21,26 @@ func getRandomItem(words []string) string {
 	return words[randomNumber]
 }
 
-func generateRandomSymbol() string {
-	return "@"
+func generateRandomNumber() string {
+	return strconv.Itoa(rand.Intn(9))
 }
 
 func generatePassword(words []string, symbols []string, wordCount int) string {
-	password := []string{}
+	password := ""
 
 	for wordCounter := 0; wordCounter < wordCount; wordCounter++ {
 		randomWord := getRandomItem(words)
 		capitalisedRandomWord := cases.Title(language.English).String(randomWord)
 
-		password = append(password, capitalisedRandomWord)
+		password += capitalisedRandomWord + "-"
 	}
 
-	randomSymbol := getRandomItem(symbols)
-	password = append(password, randomSymbol+randomSymbol)
+	password += generateRandomNumber() + generateRandomNumber()
 
-	return strings.Join(password, "-")
+	randomSymbol := getRandomItem(symbols)
+	password += randomSymbol + randomSymbol
+
+	return password
 }
 
 func getWords() []string {

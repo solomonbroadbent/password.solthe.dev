@@ -79,10 +79,24 @@ func getSymbols() []string {
 	return strings.Split(string(file), "\n")
 }
 
-func main() {
+type Response struct {
+	Body string `json:"body"`
+}
+
+func Main() Response {
 
 	words := getWords()
 	symbols := getSymbols()
 
-	os.Stdout.WriteString(generatePassword(words, symbols, 3))
+	password := generatePassword(words, symbols, 3)
+
+	os.Stdout.WriteString(password)
+
+	return Response{
+		Body: password,
+	}
+}
+
+func main() {
+	Main()
 }

@@ -1,0 +1,26 @@
+parameters: {}
+environment: {}
+packages:
+    - name: password.solthe.dev
+      shared: false
+      environment: {}
+      parameters: {}
+      annotations: {}
+      functions:
+        - name: password.solthe.dev
+          binary: false
+          main: "main"
+          runtime: go:1.20
+          web: true
+          webSecure: false
+          parameters: {}
+          environment: {}
+          annotations: {}
+          limits:
+            # milliseconds
+            timeout: 5000
+            # megabytes
+            memory: 150
+            # kilobytes
+            logs: 100000
+          

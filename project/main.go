@@ -8,6 +8,8 @@ import (
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"google.golang.org/grpc"
 )
 
 func getRandomItem(words []string) string {
@@ -72,6 +74,10 @@ func getSymbols() []string {
 	}
 
 	return strings.Split(string(file), "\n")
+}
+
+func server() {
+	grpc.NewServer()
 }
 
 func main() {

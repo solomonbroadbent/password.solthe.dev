@@ -9,8 +9,9 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
-	"google.golang.org/grpc"
+	pb "github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
+	// "generated/password-generator"
+	// "google.golang.org/grpc"
 )
 
 func getRandomItem(words []string) string {

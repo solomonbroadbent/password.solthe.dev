@@ -8,7 +8,7 @@ mkdir -p generated/password-generator
 # 	idk wtf am doowin tho
 #
 protoc --go_out=generated/password-generator \
-	--go_opt=module=github.com/solomonbroadbent/password.solthe.dev/generated/password-generator \
+	--go_opt=module=github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator \
 	--go-grpc_out=generated/password-generator \
-	--go-grpc_opt=module=github.com/solomonbroadbent/password.solthe.dev/generated/password-generator \
+	--go-grpc_opt=module=github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator \
 	protos/password-generator/password-generator.proto

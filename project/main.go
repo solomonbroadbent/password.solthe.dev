@@ -9,7 +9,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	pb "github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
+	"github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
 	// "generated/password-generator"
 	// "google.golang.org/grpc"
 )

@@ -1,1 +1,1 @@
-package github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator
+module github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator

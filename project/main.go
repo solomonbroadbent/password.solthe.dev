@@ -9,6 +9,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
+	"github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
 	"google.golang.org/grpc"
 )
 
@@ -74,10 +75,6 @@ func getSymbols() []string {
 	}
 
 	return strings.Split(string(file), "\n")
-}
-
-func server() {
-	grpc.NewServer()
 }
 
 func main() {

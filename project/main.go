@@ -109,7 +109,7 @@ func (s *server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) 
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", ":80")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -119,7 +119,7 @@ func main() {
 	// Enable gRPC server reflection
 	reflection.Register(s)
 
-	log.Println("gRPC server is running on port 50051")
+	log.Println("gRPC server is running on port 80")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

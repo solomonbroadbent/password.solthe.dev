@@ -1,12 +1,12 @@
-FROM golang:1.23
+FROM golang:1.21
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY project ./project
+
+WORKDIR /app/project
 
 RUN go mod download
-
-COPY *.go ./
 
 EXPOSE 80
 

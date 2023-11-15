@@ -5,13 +5,19 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"net"
+	"log"
+	"context"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"github.com/solomonbroadbent/password.solthe.dev/project/generated/password-generator"
+	
+	pb "github.com/solomonbroadbent/password.solthe.dev/project/generated"
+	// "github.com/solomonbroadbent/password.solthe.dev/project/generated"
 	// "generated/password-generator"
-	// "google.golang.org/grpc"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func getRandomItem(words []string) string {
@@ -78,7 +84,7 @@ func getSymbols() []string {
 	return strings.Split(string(file), "\n")
 }
 
-func main() {
+func main_old() {
 
 	words := getWords()
 	symbols := getSymbols()
@@ -87,3 +93,33 @@ func main() {
 
 	os.Stdout.WriteString(password)
 }
+
+
+type server struct {
+	pb.UnimplementedPasswordGeneratorServer
+}
+
+func (s *server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) (*pb.PasswordResponse, error) {
+	// Simple implementation: Always return the same password for testing
+	return &pb.PasswordResponse{
+		Password: "test-password",
+	}, nil
+}
+
+func main() {
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterPasswordGeneratorServer(s, &server{})
+
+	// Enable gRPC server reflection
+	reflection.Register(s)
+
+	log.Println("gRPC server is running on port 50051")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
+

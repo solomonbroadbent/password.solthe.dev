@@ -84,7 +84,7 @@ func getSymbols() []string {
 	return strings.Split(string(file), "\n")
 }
 
-func main_old() {
+func getAPassword() string {
 
 	words := getWords()
 	symbols := getSymbols()
@@ -92,6 +92,8 @@ func main_old() {
 	password := generatePassword(words, symbols, 3)
 
 	os.Stdout.WriteString(password)
+
+	return password;
 }
 
 
@@ -102,7 +104,7 @@ type server struct {
 func (s *server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) (*pb.PasswordResponse, error) {
 	// Simple implementation: Always return the same password for testing
 	return &pb.PasswordResponse{
-		Password: "test-password",
+		Password: getAPassword(),
 	}, nil
 }
 

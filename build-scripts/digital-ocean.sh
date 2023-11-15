@@ -13,3 +13,8 @@ doctl compute droplet create \
 
 
 doctl compute ssh password.solthe.dev
+
+doctl compute firewall create --name password.solthe.dev \
+	--inbound-rules "protocol:tcp,ports:80,address:0.0.0.0/0"
+
+doctl compute firewall add-droplets a7603bd2-1f23-44ce-a29f-2b14d5b6d9fa --droplet-ids 385124377

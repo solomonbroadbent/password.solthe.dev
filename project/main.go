@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"net"
+	"net/http"
 	"log"
 	"context"
 
@@ -119,8 +120,33 @@ func main() {
 	// Enable gRPC server reflection
 	reflection.Register(s)
 
-	log.Println("gRPC server is running on port 80")
-	if err := s.Serve(lis); err != nil {
+	go func() {
+		log.Println("gRPC server is running on port 80")
+		if err := s.Serve(lis); err != nil {
+			log.Fatalf("failed to serve: %v", err)
+		}
+	}()
+	
+	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Add CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+
+		// Your gRPC server logic goes here
+		// You might want to check the request method and handle OPTIONS requests appropriately
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Pass the request to gRPC server
+		s.ServeHTTP(w, r)
+	}))
+
+	// Start HTTP server for handling CORS and gRPC requests
+	log.Println("HTTP server is running on port 80")
+	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

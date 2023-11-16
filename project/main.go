@@ -146,7 +146,7 @@ func main() {
 
 	// Start HTTP server for handling CORS and gRPC requests
 	log.Println("HTTP server is running on port 80")
-	if err := http.ListenAndServe(":80", nil); err != nil {
+	if err := http.Serve(lis, nil); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

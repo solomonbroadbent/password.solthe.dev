@@ -12,7 +12,7 @@
 
 # COMMANDS
 test the api...
-grpcurl -plaintext localhost:50051 password_generator.PasswordGenerator/GeneratePassword
+grpcurl -plaintext -import-path ./protos -proto password-generator.proto localhost:50051 password_generator.PasswordGenerator/GeneratePassword
 
 DOCKER
 docker image build --tag "solomonbroadbent/password.solthe.dev:api-latest" .

@@ -15,10 +15,7 @@ import (
 
 	
 	pb "github.com/solomonbroadbent/password.solthe.dev/project/generated"
-	// "github.com/solomonbroadbent/password.solthe.dev/project/generated"
-	// "generated/password-generator"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 func getRandomItem(words []string) string {
@@ -118,9 +115,6 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterPasswordGeneratorServer(s, &server{})
-
-	// Enable gRPC server reflection
-	reflection.Register(s)
 
 	go func() {
 		log.Println("gRPC server is running on port", port)

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  api:
+    image: solomonbroadbent/password.solthe.dev:api-latest
+    container: api.password.solthe.dev
+    build:
+      context: .
+    expose:
+      - '50051'
+
+  reverse-proxy:
+    image: solomonbroadbent/password.solthe.dev:reverse-proxy-latest
+    container: reverse-proxy.password.solthe.dev
+    volumes:
+      - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    build:
+      context: reverse-proxy
+    ports:
+      - '80:80'

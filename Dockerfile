@@ -8,6 +8,6 @@ WORKDIR /app/project
 
 RUN go mod download
 
-EXPOSE 80
+EXPOSE 50051
 
 ENTRYPOINT go run .

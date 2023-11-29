@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"net"
-	"net/http"
+	// "net/http"
 	"log"
 	"context"
 
@@ -100,7 +100,8 @@ type server struct {
 }
 
 func (s *server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) (*pb.PasswordResponse, error) {
-	// Simple implementation: Always return the same password for testing
+	log.Println("sending a generated password")
+
 	return &pb.PasswordResponse{
 		Password: getAPassword(),
 	}, nil
@@ -109,12 +110,13 @@ func (s *server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) 
 func main() {
 	port := "50051"
 
+	s := grpc.NewServer()
+	pb.RegisterPasswordGeneratorServer(s, &server{})
+
 	lis, err := net.Listen("tcp", "0.0.0.0:" + port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
-	pb.RegisterPasswordGeneratorServer(s, &server{})
 
 	go func() {
 		log.Println("gRPC server is running on port", port)
@@ -122,28 +124,30 @@ func main() {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
+
+	select {} // keeps prog running - NEED TO REMOVE LATER HERER!!!!!
 	
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Add CORS headers
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+		// w.Header().Set("Access-Control-Allow-Origin", "*")
+		// w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+		// w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
 
 		// Your gRPC server logic goes here
 		// You might want to check the request method and handle OPTIONS requests appropriately
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
+		// if r.Method == http.MethodOptions {
+			// w.WriteHeader(http.StatusOK)
+			// return
+		// }
 
 		// Pass the request to gRPC server
-		s.ServeHTTP(w, r)
-	}))
+		// s.ServeHTTP(w, r)
+	// }))
 
 	// Start HTTP server for handling CORS and gRPC requests
-	log.Println("HTTP server is running on port", port)
-	if err := http.Serve(lis, nil); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	// log.Println("HTTP server is running on port", port)
+	// if err := http.Serve(lis, nil); err != nil {
+		// log.Fatalf("failed to serve: %v", err)
+	// }
 }
 

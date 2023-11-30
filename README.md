@@ -14,6 +14,9 @@
 test the api...
 grpcurl -plaintext -import-path ./protos -proto password-generator.proto localhost:50051 password_generator.PasswordGenerator/GeneratePassword
 
+test the api headers...
+grpcurl -v -plaintext -import-path ./protos -proto password-generator.proto api.password.solthe.dev.local:80 password_generator.PasswordGenerator/GeneratePassword
+
 DOCKER
 docker image build --tag "solomonbroadbent/password.solthe.dev:api-latest" .
 docker container create --name api.password.solthe.dev -p 80:80 "solomonbroadbent/password.solthe.dev:api-latest"

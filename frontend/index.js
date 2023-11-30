@@ -2,7 +2,7 @@ import { PasswordGeneratorClient } from './generated/password-generator_grpc_web
 import { PasswordRequest } from './generated/password-generator_grpc_web_pb.js'; 
 
 // Now you can use PasswordGeneratorClient and PasswordRequest in your code
-const client = new proto.password_generator.PasswordGeneratorClient('http://password.solthe.dev');
+const client = new proto.password_generator.PasswordGeneratorClient('grpc://api.password.solthe.dev.local');
 const request = new proto.password_generator.PasswordRequest();
 
 document.getElementById('passwordGeneratorButton').addEventListener('click', () => {

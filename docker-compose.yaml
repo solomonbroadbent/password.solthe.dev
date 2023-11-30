@@ -11,6 +11,16 @@ services:
     networks:
       - password.solthe.dev
 
+  frontend:
+    image: solomonbroadbent/password.solthe.dev:frontend-latest
+    container_name: frontend.password.solthe.dev
+    build:
+      context: frontend
+    expose:
+      - '80'
+    networks:
+      - password.solthe.dev
+
   reverse-proxy:
     image: solomonbroadbent/password.solthe.dev:reverse-proxy-latest
     container_name: reverse-proxy.password.solthe.dev
